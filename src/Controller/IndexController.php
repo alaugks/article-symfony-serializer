@@ -3,8 +3,6 @@
 namespace App\Controller;
 
 use App\Dto\ContactDto;
-use App\Normalizer\Value\BooleanValue;
-use App\Normalizer\Value\StringValue;
 use App\Service\CrmSerializerService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,12 +16,12 @@ class IndexController extends AbstractController
     public function index(): Response
     {
         $contactDto = new ContactDto();
-        $contactDto->setSalutation(new StringValue('FEMALE'));
+        $contactDto->setSalutation('FEMALE');
         $contactDto->setFirstname('Jane');
         $contactDto->setLastname('Doe');
         $contactDto->setEmail('jane.doe@example.com');
         $contactDto->setBirthdate(new \DateTimeImmutable('1989-11-09'));
-        $contactDto->setMarketingInformation(new BooleanValue(true));
+        $contactDto->setMarketingInformation(true);
 
         $array = $this->crmSerializerService->normalize($contactDto);
         /*
@@ -66,6 +64,7 @@ class IndexController extends AbstractController
             )
         */
 
+
         $json = $this->crmSerializerService->serialize($contactDto);
         /*
             {
@@ -76,6 +75,7 @@ class IndexController extends AbstractController
                 "46": "2",
                 "100674": "1"
             }
+
         */
 
         $contactDtoFromJson = $this->crmSerializerService->deserialize($json);

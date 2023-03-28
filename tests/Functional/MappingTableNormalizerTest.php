@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php
 
 use App\Normalizer\MappingTableNormalizer;
 use App\Normalizer\Value\StringValue;

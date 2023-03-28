@@ -3,15 +3,13 @@
 namespace App\Tests;
 
 use App\Dto\ContactDto;
-use App\Normalizer\Value\BooleanValue;
-use App\Normalizer\Value\StringValue;
 use App\Service\CrmSerializerService;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class CrmSerializerServiceTest extends KernelTestCase
 {
-    private CrmSerializerService $crmMappingService;
+    private CrmSerializerService $serializer;
 
     public array $contactDto = [
         "1" => "Jane",
@@ -25,20 +23,20 @@ class CrmSerializerServiceTest extends KernelTestCase
     public function setUp(): void
     {
         self::bootKernel();
-        $this->crmMappingService = self::getContainer()->get(CrmSerializerService::class);
+        $this->serializer = self::getContainer()->get(CrmSerializerService::class);
     }
 
     public function testNormalize()
     {
         $contactDto = new ContactDto();
-        $contactDto->setSalutation(new StringValue('FEMALE'));
+        $contactDto->setSalutation('FEMALE');
         $contactDto->setFirstname('Jane');
         $contactDto->setLastname('Doe');
         $contactDto->setBirthdate(new DateTimeImmutable('1989-11-09'));
         $contactDto->setEmail('jane.doe@example.com');
-        $contactDto->setMarketingInformation(new BooleanValue(true));
+        $contactDto->setMarketingInformation(true);
 
-        $array = $this->crmMappingService->normalize($contactDto);
+        $array = $this->serializer->normalize($contactDto);
 
         $this->assertEquals(
             $this->contactDto,
@@ -49,14 +47,14 @@ class CrmSerializerServiceTest extends KernelTestCase
     public function testSerializer()
     {
         $contactDto = new ContactDto();
-        $contactDto->setSalutation(new StringValue('FEMALE'));
+        $contactDto->setSalutation('FEMALE');
         $contactDto->setFirstname('Jane');
         $contactDto->setLastname('Doe');
         $contactDto->setBirthdate(new DateTimeImmutable('1989-11-09'));
         $contactDto->setEmail('jane.doe@example.com');
-        $contactDto->setMarketingInformation(new BooleanValue(true));
+        $contactDto->setMarketingInformation(true);
 
-        $jsonContent = $this->crmMappingService->serialize($contactDto);
+        $jsonContent = $this->serializer->serialize($contactDto);
 
         $this->assertJsonStringEqualsJsonString(
             json_encode($this->contactDto),
@@ -67,10 +65,10 @@ class CrmSerializerServiceTest extends KernelTestCase
     public function testNormalizeSkipNullValue()
     {
         $contactDto = new ContactDto();
-        $contactDto->setSalutation(new StringValue('FEMALE'));
+        $contactDto->setSalutation('FEMALE');
         $contactDto->setFirstname('Jane');
         $contactDto->setEmail('jane.doe@example.com');
-        $contactDto->setMarketingInformation(new BooleanValue(true));
+        $contactDto->setMarketingInformation(true);
 
         $this->assertEquals(
             (function () {
@@ -79,17 +77,17 @@ class CrmSerializerServiceTest extends KernelTestCase
                 unset($array['4']);
                 return $array;
             })(),
-            $this->crmMappingService->normalize($contactDto)
+            $this->serializer->normalize($contactDto)
         );
     }
 
     public function testSerializeSkipNullValue()
     {
         $contactDto = new ContactDto();
-        $contactDto->setSalutation(new StringValue('FEMALE'));
+        $contactDto->setSalutation('FEMALE');
         $contactDto->setFirstname('Jane');
         $contactDto->setEmail('jane.doe@example.com');
-        $contactDto->setMarketingInformation(new BooleanValue(true));
+        $contactDto->setMarketingInformation(true);
 
         $this->assertJsonStringEqualsJsonString(
             json_encode((function () {
@@ -98,7 +96,7 @@ class CrmSerializerServiceTest extends KernelTestCase
                 unset($array['4']);
                 return $array;
             })()),
-            $this->crmMappingService->serialize($contactDto)
+            $this->serializer->serialize($contactDto)
         );
     }
 
@@ -107,14 +105,14 @@ class CrmSerializerServiceTest extends KernelTestCase
         /**
          * @var $contactDto ContactDto
          */
-        $contactDto = $this->crmMappingService->denormalize($this->contactDto, ContactDto::class);
+        $contactDto = $this->serializer->denormalize($this->contactDto);
 
-        $this->assertSame('FEMALE', $contactDto->getSalutation()->getValue());
+        $this->assertSame('FEMALE', $contactDto->getSalutation());
         $this->assertSame('Jane', $contactDto->getFirstname());
         $this->assertSame('Doe', $contactDto->getLastname());
         $this->assertSame('1989-11-09', $contactDto->getBirthdate()->format('1989-11-09'));
         $this->assertSame('jane.doe@example.com', $contactDto->getEmail());
-        $this->assertTrue($contactDto->isMarketingInformation()->getValue());
+        $this->assertTrue($contactDto->isMarketingInformation());
     }
 
     public function testDeserialize()
@@ -122,14 +120,14 @@ class CrmSerializerServiceTest extends KernelTestCase
         /**
          * @var $contactDto ContactDto
          */
-        $contactDto = $this->crmMappingService->deserialize(json_encode($this->contactDto));
+        $contactDto = $this->serializer->deserialize(json_encode($this->contactDto));
 
-        $this->assertSame('FEMALE', $contactDto->getSalutation()->getValue());
+        $this->assertSame('FEMALE', $contactDto->getSalutation());
         $this->assertSame('Jane', $contactDto->getFirstname());
         $this->assertSame('Doe', $contactDto->getLastname());
         $this->assertSame('1989-11-09', $contactDto->getBirthdate()->format('1989-11-09'));
         $this->assertSame('jane.doe@example.com', $contactDto->getEmail());
-        $this->assertTrue($contactDto->isMarketingInformation()->getValue());
+        $this->assertTrue($contactDto->isMarketingInformation());
     }
 
     public function testDenormalizeOnNull()
@@ -137,14 +135,14 @@ class CrmSerializerServiceTest extends KernelTestCase
         /**
          * @var $contactDto ContactDto
          */
-        $contactDto = $this->crmMappingService->denormalize([]);
+        $contactDto = $this->serializer->denormalize([]);
 
-        $this->assertNull($contactDto->getSalutation()?->getValue());
+        $this->assertNull($contactDto->getSalutation());
         $this->assertNull($contactDto->getFirstname());
         $this->assertNull($contactDto->getLastname());
         $this->assertNull($contactDto->getBirthdate());
         $this->assertNull($contactDto->getEmail());
-        $this->assertNull($contactDto->isMarketingInformation()?->getValue());
+        $this->assertNull($contactDto->isMarketingInformation());
     }
 
     public function testDeserializeOnNull()
@@ -152,13 +150,13 @@ class CrmSerializerServiceTest extends KernelTestCase
         /**
          * @var $contactDto ContactDto
          */
-        $contactDto = $this->crmMappingService->deserialize('{}');
+        $contactDto = $this->serializer->deserialize('{}');
 
-        $this->assertNull($contactDto->getSalutation()?->getValue());
+        $this->assertNull($contactDto->getSalutation());
         $this->assertNull($contactDto->getFirstname());
         $this->assertNull($contactDto->getLastname());
         $this->assertNull($contactDto->getBirthdate());
         $this->assertNull($contactDto->getEmail());
-        $this->assertNull($contactDto->isMarketingInformation()?->getValue());
+        $this->assertNull($contactDto->isMarketingInformation());
     }
 }

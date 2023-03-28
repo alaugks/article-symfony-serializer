@@ -13,3 +13,36 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+
+    'App\Service\CrmSerializerService':
+        arguments:
+            - '@crm_serializer'
+
+    crm_serializer:
+        class: 'Symfony\Component\Serializer\Serializer'
+        arguments:
+            $normalizers:
+                - '@serializer.normalizer.datetime'
+                - '@app.normalizer.mapping_table_normalizer'
+                - '@crm_serializer.property_normalizer'
+            $encoders:
+                - '@serializer.encoder.json'
+
+    crm_serializer.property_normalizer:
+        class: 'Symfony\Component\Serializer\Normalizer\PropertyNormalizer'
+        arguments:
+            $nameConverter: '@serializer.name_converter.metadata_aware'
+            $propertyTypeExtractor: '@crm_serializer.reflection_extractor'
+            $defaultContext: '%serializer_default_context%'
+
+    crm_serializer.reflection_extractor:
+        class: 'Symfony\Component\PropertyInfo\PropertyInfoExtractor'
+        arguments:
+            $typeExtractors:
+                - '@app.service.property_info.property_type_extractor'
+
+    app.service.property_info.property_type_extractor:
+        class: 'App\Reflection\PropertyTypeExtractor'
+
+    app.normalizer.mapping_table_normalizer:
+        class: 'App\Normalizer\MappingTableNormalizer'

@@ -85,23 +85,23 @@ class ContactDto
         $this->birthdate = $birthdate;
     }
 
-    public function getSalutation(): ?StringValue
+    public function getSalutation(): ?string
     {
-        return $this->salutation;
+        return $this->salutation?->getValue();
     }
 
-    public function setSalutation(?StringValue $salutation): void
+    public function setSalutation(?string $salutation): void
     {
-        $this->salutation = $salutation;
+        $this->salutation = new StringValue($salutation);
     }
 
-    public function isMarketingInformation(): ?BooleanValue
+    public function isMarketingInformation(): ?bool
     {
-        return $this->marketingInformation;
+        return $this->marketingInformation?->getValue();
     }
 
-    public function setMarketingInformation(?BooleanValue $marketingInformation): void
+    public function setMarketingInformation(?bool $marketingInformation): void
     {
-        $this->marketingInformation = $marketingInformation;
+        $this->marketingInformation = new BooleanValue($marketingInformation);
     }
 }
