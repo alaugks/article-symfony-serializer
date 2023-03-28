@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<h2>Normalize/Denormalize</h2>
+
+<p><strong>Normalize</strong></p>
+
+<div>
+    <pre>
+{{ array }}
+    </pre>
+</div>
+
+<p><strong>Denormalize</strong></p>
+
+<div>
+    <pre>
+{{ object_from_array }}
+    </pre>
+</div>
+
+<h2>Serialize/Deserialize</h2>
+
+<p><strong>Serialize</strong></p>
+
+<div>
+    <pre>
+{{ json }}
+    </pre>
+</div>
+
+<p><strong>Deserialize</strong></p>
+
+<div>
+    <pre>
+{{ object_from_json }}
+    </pre>
+</div>
+
+{% endblock %}
