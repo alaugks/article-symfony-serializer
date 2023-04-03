@@ -22,7 +22,7 @@ class IndexController extends AbstractController
         $contactDto->setFirstname('Jane');
         $contactDto->setLastname('Doe');
         $contactDto->setEmail('jane.doe@example.com');
-        $contactDto->setBirthdate(new \DateTimeImmutable('1989-11-09'));
+        $contactDto->setBirthdate(new \DateTime('1989-11-09'));
         $contactDto->setMarketingInformation(new BooleanValue(true));
 
         $array = $this->crmSerializerService->normalize($contactDto);
