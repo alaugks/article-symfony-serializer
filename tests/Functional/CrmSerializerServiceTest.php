@@ -4,7 +4,7 @@ namespace App\Tests;
 
 use App\Dto\ContactDto;
 use App\Service\CrmSerializerService;
-use DateTimeImmutable;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class CrmSerializerServiceTest extends KernelTestCase
@@ -32,7 +32,7 @@ class CrmSerializerServiceTest extends KernelTestCase
         $contactDto->setSalutation('FEMALE');
         $contactDto->setFirstname('Jane');
         $contactDto->setLastname('Doe');
-        $contactDto->setBirthdate(new DateTimeImmutable('1989-11-09'));
+        $contactDto->setBirthdate(new DateTime('1989-11-09'));
         $contactDto->setEmail('jane.doe@example.com');
         $contactDto->setMarketingInformation(true);
 
@@ -50,7 +50,7 @@ class CrmSerializerServiceTest extends KernelTestCase
         $contactDto->setSalutation('FEMALE');
         $contactDto->setFirstname('Jane');
         $contactDto->setLastname('Doe');
-        $contactDto->setBirthdate(new DateTimeImmutable('1989-11-09'));
+        $contactDto->setBirthdate(new DateTime('1989-11-09'));
         $contactDto->setEmail('jane.doe@example.com');
         $contactDto->setMarketingInformation(true);
 
