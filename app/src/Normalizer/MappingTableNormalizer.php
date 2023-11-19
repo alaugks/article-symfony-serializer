@@ -5,6 +5,7 @@ namespace App\Normalizer;
 use App\Normalizer\Value\BooleanValue;
 use App\Normalizer\Value\StringValue;
 use App\Normalizer\Value\ValueInterface;
+use InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -59,7 +60,7 @@ class MappingTableNormalizer implements NormalizerInterface, DenormalizerInterfa
     private function getMappingTable(array $context): array
     {
         if (!isset($context[self::TABLE]) || !is_array($context[self::TABLE])) {
-            throw new \InvalidArgumentException('mapping_table not defined');
+            throw new InvalidArgumentException('mapping_table not defined');
         }
 
         return $context[self::TABLE];

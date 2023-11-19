@@ -1,7 +1,10 @@
 <?php declare(strict_types = 1);
 
+namespace App\Tests\Functional;
+
 use App\Normalizer\MappingTableNormalizer;
 use App\Normalizer\Value\StringValue;
+use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class MappingTableNormalizerTest extends KernelTestCase
@@ -19,7 +22,7 @@ class MappingTableNormalizerTest extends KernelTestCase
 
     public function testMappingTableNotDefined()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->mappingTableNormalizer->normalize(
             new StringValue('FEMALE'),
             'json'

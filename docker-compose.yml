@@ -1,0 +1,13 @@
+version: '3.6'
+services:
+  php:
+    container_name: attribute_article
+    image: alaugks/apache-php:8.2.12-v1.0-xdebug
+    volumes:
+      - ./app:/var/www/html
+    ports:
+      - 8080:80
+    environment:
+      APPLICATION_ENV: "docker"
+      PHP_IDE_CONFIG: "serverName=localhost"
+      XDEBUG_CONFIG: "idekey=attribute_article"

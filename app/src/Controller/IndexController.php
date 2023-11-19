@@ -6,6 +6,7 @@ use App\Dto\ContactDto;
 use App\Normalizer\Value\BooleanValue;
 use App\Normalizer\Value\StringValue;
 use App\Service\CrmSerializerService;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,7 +23,7 @@ class IndexController extends AbstractController
         $contactDto->setFirstname('Jane');
         $contactDto->setLastname('Doe');
         $contactDto->setEmail('jane.doe@example.com');
-        $contactDto->setBirthdate(new \DateTime('1989-11-09'));
+        $contactDto->setBirthdate(new DateTime('1989-11-09'));
         $contactDto->setMarketingInformation(new BooleanValue(true));
 
         $array = $this->crmSerializerService->normalize($contactDto);
