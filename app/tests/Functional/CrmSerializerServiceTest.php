@@ -1,12 +1,15 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Functional;
 
 use App\Dto\ContactDto;
 use App\Service\CrmSerializerService;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
+/**
+ * @SuppressWarnings("php:S1192")
+ */
 class CrmSerializerServiceTest extends KernelTestCase
 {
     private CrmSerializerService $serializer;
@@ -14,7 +17,7 @@ class CrmSerializerServiceTest extends KernelTestCase
     public array $contactDto = [
         "1" => "Jane",
         "2" => "Doe",
-        "3" =>"jane.doe@example.com",
+        "3" => "jane.doe@example.com",
         "4" => "1989-11-09",
         "46" =>"2",
         "100674" => "1"

@@ -5,6 +5,7 @@ namespace App\Dto;
 use App\Normalizer\MappingTableNormalizer;
 use App\Normalizer\Value\BooleanValue;
 use App\Normalizer\Value\StringValue;
+use DateTimeInterface;
 use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
@@ -33,7 +34,7 @@ class ContactDto
 
     #[Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
     #[SerializedName('4')]
-    private ?\DateTimeInterface $birthdate = null;
+    private ?DateTimeInterface $birthdate = null;
 
     //#[Context([MappingTableNormalizer::TABLE => self::SALUTATIONS])]
     #[Context([MappingTableNormalizer::TABLE => ['1' => 'MALE', '2' => 'FEMALE', '6' => 'DIVERS']])]
@@ -75,12 +76,12 @@ class ContactDto
         $this->email = $email;
     }
 
-    public function getBirthdate(): ?\DateTimeInterface
+    public function getBirthdate(): ?DateTimeInterface
     {
         return $this->birthdate;
     }
 
-    public function setBirthdate(?\DateTimeInterface $birthdate): void
+    public function setBirthdate(?DateTimeInterface $birthdate): void
     {
         $this->birthdate = $birthdate;
     }
