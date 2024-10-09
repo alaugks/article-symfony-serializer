@@ -1,7 +1,7 @@
 version: '3.6'
 services:
   php:
-    container_name: attribute_article
+    container_name: article_symfony_serializer
     image: alaugks/apache-php:8.2.21-v2.0-xdebug
     volumes:
       - ./app:/var/www/app
@@ -10,4 +10,4 @@ services:
     environment:
       APPLICATION_ENV: "docker"
       PHP_IDE_CONFIG: "serverName=localhost"
-      XDEBUG_CONFIG: "idekey=attribute_article"
+      XDEBUG_CONFIG: "idekey=article_symfony_serializer"

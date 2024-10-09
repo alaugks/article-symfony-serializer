@@ -16,18 +16,18 @@ docker compose -f docker-compose.yml up --build -d
 
 ### Run composer install
 ```bash
-docker exec attribute_article composer install
+docker exec article_symfony_serializer composer install
 ```
 
 ### Run tests
 ```bash
-docker exec attribute_article bin/phpunit
+docker exec article_symfony_serializer bin/phpunit
 ```
 
 ### Open bash
 
 ```bash
-docker exec -it attribute_article bash
+docker exec -it article_symfony_serializer bash
 ```
 
 ## Frontend
