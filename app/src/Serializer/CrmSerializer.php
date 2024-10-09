@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
-use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
+use Symfony\Component\Serializer\Mapping\Loader\AttributeLoader;
 use Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -27,7 +27,7 @@ class CrmSerializer
         // #[TaggedIterator('serializer.encoder')] $taggedEncoders
     )
     {
-        $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader(null));
+        $classMetadataFactory = new ClassMetadataFactory(new AttributeLoader(null));
 
         $metadataAwareNameConverter = new MetadataAwareNameConverter($classMetadataFactory);
 
