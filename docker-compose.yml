@@ -2,9 +2,9 @@ version: '3.6'
 services:
   php:
     container_name: attribute_article
-    image: alaugks/apache-php:8.2.12-v1.0-xdebug
+    image: alaugks/apache-php:8.2.21-v2.0-xdebug
     volumes:
-      - ./app:/var/www/html
+      - ./app:/var/www/app
     ports:
       - 8080:80
     environment:
