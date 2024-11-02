@@ -1,6 +1,6 @@
 <?php
 
-namespace Functional;
+namespace App\Tests\Functional;
 
 use App\Normalizer\Value\StringValue;
 use App\Normalizer\Value\ValueInterface;

@@ -1,4 +1,4 @@
-version: '3.6'
+composer require webmozart/assertversion: '3.6'
 services:
   php:
     container_name: article_symfony_serializer

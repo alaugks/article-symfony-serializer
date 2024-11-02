@@ -5,12 +5,13 @@ namespace App\Normalizer;
 use App\Normalizer\Value\BooleanValue;
 use App\Normalizer\Value\StringValue;
 use App\Normalizer\Value\ValueInterface;
-use InvalidArgumentException;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Webmozart\Assert\Assert;
 
-class MappingTableNormalizer implements NormalizerInterface, DenormalizerInterface, CacheableSupportsMethodInterface
+use function get_class;
+
+class MappingTableNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     public const TABLE = 'mapping_table';
 
@@ -22,16 +23,13 @@ class MappingTableNormalizer implements NormalizerInterface, DenormalizerInterfa
     public function normalize(mixed $object, string $format = null, array $context = []): ?string
     {
         if (null === $object?->getValue() || '' === $object?->getValue()) {
-            return ''; // Reset value in CRM
+            return ''; // Reset value from property in Emarsys CRM
         }
 
-        $mappingTable = $this->getMappingTable($context);
+        Assert::keyExists($context, self::TABLE, sprintf('MappingTable not set (%s)', get_class($object)));
 
-        $key = array_search($object->getValue(), $mappingTable);
-        if($key) {
-            return (string)$key; // Force string
-        }
-        return null;
+        $key = array_search($object->getValue(), $context[self::TABLE], true);
+        return $key ? (string)$key : null;
     }
 
     public function supportsNormalization(mixed $data, string $format = null): bool
@@ -41,33 +39,14 @@ class MappingTableNormalizer implements NormalizerInterface, DenormalizerInterfa
 
     public function denormalize($data, $type, $format = null, array $context = array()): mixed
     {
-        $mappingTable = $this->getMappingTable($context);
+        Assert::keyExists($context, self::TABLE, sprintf('MappingTable not set (%s)', $type));
+        $mappingTable = $context[self::TABLE];
 
-        foreach ($mappingTable as $key => $value) {
-            if ((string)$key === $data) {
-                return new $type($value);
-            }
-        }
-
-        return new $type(null);
+        return isset($mappingTable[$data]) ? new $type($mappingTable[$data]) : new $type(null);
     }
 
     public function supportsDenormalization($data, $type, $format = null): bool
     {
         return in_array($type, self::SUPPORTED_TYPES);
-    }
-
-    private function getMappingTable(array $context): array
-    {
-        if (!isset($context[self::TABLE]) || !is_array($context[self::TABLE])) {
-            throw new InvalidArgumentException('mapping_table not defined');
-        }
-
-        return $context[self::TABLE];
-    }
-
-    public function hasCacheableSupportsMethod(): bool
-    {
-        return __CLASS__ === static::class;
     }
 }
