@@ -4,7 +4,7 @@ namespace App\Normalizer\Value;
 
 class StringValue implements ValueInterface
 {
-    public function __construct(private ?string $value = null) {}
+    public function __construct(private readonly ?string $value = null) {}
 
     public function getValue(): ?string
     {

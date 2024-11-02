@@ -3,16 +3,11 @@
 namespace App\Service;
 
 use App\Dto\ContactDto;
-use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class CrmSerializerService
 {
-    private Serializer $serializer; // Only Symfony Serializer
-
-    public function __construct(SerializerInterface $serializer) {
-        $this->serializer = $serializer;
-    }
+    public function __construct(private readonly SerializerInterface $serializer) {}
 
     public function normalize(ContactDto $contactDto): array
     {

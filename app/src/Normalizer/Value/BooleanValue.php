@@ -4,7 +4,7 @@ namespace App\Normalizer\Value;
 
 class BooleanValue implements ValueInterface
 {
-    public function __construct(private ?bool $value = null) {}
+    public function __construct(private readonly ?bool $value = null) {}
 
     public function getValue(): ?bool
     {

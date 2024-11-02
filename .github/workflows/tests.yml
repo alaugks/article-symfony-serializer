@@ -1,0 +1,21 @@
+name: "Tests"
+run-name: Tests [${{ github.ref_name }}]
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - property-normalizer
+  workflow_dispatch:
+jobs:
+  tests:
+    name: Tests
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Run Tests"
+        run: |
+          docker compose up -d
+          docker exec article_symfony_serializer composer install
+          docker exec article_symfony_serializer bin/phpunit
