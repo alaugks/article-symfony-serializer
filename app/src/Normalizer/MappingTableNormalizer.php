@@ -9,8 +9,6 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Webmozart\Assert\Assert;
 
-use function get_class;
-
 class MappingTableNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     public const TABLE = 'mapping_table';
@@ -26,7 +24,7 @@ class MappingTableNormalizer implements NormalizerInterface, DenormalizerInterfa
             return ''; // Reset value from property in Emarsys CRM
         }
 
-        Assert::keyExists($context, self::TABLE, sprintf('MappingTable not set (%s)', get_class($object)));
+        Assert::keyExists($context, self::TABLE, sprintf('MappingTable not set (%s)', \get_class($object)));
 
         $key = array_search($object->getValue(), $context[self::TABLE], true);
         return $key ? (string)$key : null;
@@ -48,5 +46,12 @@ class MappingTableNormalizer implements NormalizerInterface, DenormalizerInterfa
     public function supportsDenormalization($data, $type, $format = null): bool
     {
         return in_array($type, self::SUPPORTED_TYPES);
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            '*' => false
+        ];
     }
 }
