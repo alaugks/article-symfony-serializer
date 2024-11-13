@@ -16,26 +16,26 @@ services:
 
     'App\Service\CustomSerializerService':
         arguments:
-            - '@crm_serializer'
+            - '@custom_serializer'
 
-    crm_serializer:
+    custom_serializer:
         class: 'Symfony\Component\Serializer\Serializer'
         arguments:
             $normalizers:
                 - '@serializer.normalizer.datetime'
                 - '@app.normalizer.mapping_table_normalizer'
-                - '@crm_serializer.property_normalizer'
+                - '@custom_serializer.property_normalizer'
             $encoders:
                 - '@serializer.encoder.json'
 
-    crm_serializer.property_normalizer:
+    custom_serializer.property_normalizer:
         class: 'Symfony\Component\Serializer\Normalizer\PropertyNormalizer'
         arguments:
             $nameConverter: '@serializer.name_converter.metadata_aware'
-            $propertyTypeExtractor: '@crm_serializer.reflection_extractor'
+            $propertyTypeExtractor: '@custom_serializer.reflection_extractor'
             $defaultContext: '%serializer_default_context%'
 
-    crm_serializer.reflection_extractor:
+    custom_serializer.reflection_extractor:
         class: 'Symfony\Component\PropertyInfo\PropertyInfoExtractor'
         arguments:
             $typeExtractors:
