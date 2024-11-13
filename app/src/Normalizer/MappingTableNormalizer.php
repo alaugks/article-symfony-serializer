@@ -35,7 +35,7 @@ class MappingTableNormalizer implements NormalizerInterface, DenormalizerInterfa
         return $data instanceof ValueInterface;
     }
 
-    public function denormalize($data, $type, $format = null, array $context = array()): mixed
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): ?ValueInterface
     {
         Assert::keyExists($context, self::TABLE, sprintf('MappingTable not set (%s)', $type));
         $mappingTable = $context[self::TABLE];
@@ -43,7 +43,7 @@ class MappingTableNormalizer implements NormalizerInterface, DenormalizerInterfa
         return isset($mappingTable[$data]) ? new $type($mappingTable[$data]) : new $type(null);
     }
 
-    public function supportsDenormalization($data, $type, $format = null): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null): bool
     {
         return in_array($type, self::SUPPORTED_TYPES);
     }
