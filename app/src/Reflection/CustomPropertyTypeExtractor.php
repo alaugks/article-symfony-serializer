@@ -10,7 +10,7 @@ use Symfony\Component\PropertyInfo\Type;
  *
  * @see \Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor
  */
-class PropertyTypeExtractor implements PropertyTypeExtractorInterface
+class CustomPropertyTypeExtractor implements PropertyTypeExtractorInterface
 {
     private const MAP_TYPES = [
         'integer' => Type::BUILTIN_TYPE_INT,

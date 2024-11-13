@@ -3,42 +3,25 @@
 namespace App\Serializer;
 
 use App\Normalizer\MappingTableNormalizer;
-use App\Reflection\PropertyTypeExtractor;
+use App\Reflection\CustomPropertyTypeExtractor;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
 use Symfony\Component\Serializer\Mapping\Loader\AttributeLoader;
 use Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class CrmSerializer
+class CustomSerializer
 {
-    private SerializerInterface|NormalizerInterface|DenormalizerInterface $serializer;
+    private SerializerInterface $serializer;
 
-    public function __construct(
-        ParameterBagInterface $parameterBag
-        // #[TaggedIterator('serializer.normalizer')] $taggedNormalizers
-        // #[TaggedIterator('serializer.encoder')] $taggedEncoders
-    )
+    public function __construct(ParameterBagInterface $parameterBag)
     {
         $classMetadataFactory = new ClassMetadataFactory(new AttributeLoader(null));
 
         $metadataAwareNameConverter = new MetadataAwareNameConverter($classMetadataFactory);
-
-        //    $propertyTypeExtractor = new ReflectionExtractor(
-        //        [], // overwrite ['add', 'remove', 'set']
-        //        []  // overwrite ['get', 'is', 'has', 'can']
-        //    );
-
-        $propertyTypeExtractor = new PropertyInfoExtractor(
-            typeExtractors: [new PropertyTypeExtractor()]
-        );
 
         $defaultContext = [];
         if ($parameterBag->has('serializer_default_context')) {
@@ -46,9 +29,9 @@ class CrmSerializer
         }
 
         $propertyNormalizer = new PropertyNormalizer(
-            classMetadataFactory: $classMetadataFactory,
-            nameConverter: $metadataAwareNameConverter,
-            propertyTypeExtractor: $propertyTypeExtractor,
+            classMetadataFactory: $classMetadataFactory, // Attribute
+            nameConverter: $metadataAwareNameConverter, // PropertyName and SerializerName
+            propertyTypeExtractor: new CustomPropertyTypeExtractor(),
             defaultContext: $defaultContext
         );
 
@@ -56,10 +39,7 @@ class CrmSerializer
             [
                 new DateTimeNormalizer(), // For properties with \DateTimeInterface
                 new MappingTableNormalizer(),
-                $propertyNormalizer
-            ],
-            [
-                new JsonEncoder()
+                $propertyNormalizer,
             ]
         );
     }

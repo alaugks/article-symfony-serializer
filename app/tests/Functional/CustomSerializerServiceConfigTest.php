@@ -3,16 +3,16 @@
 namespace App\Tests\Functional;
 
 use App\Dto\ContactDto;
-use App\Service\CrmSerializerService;
+use App\Service\CustomSerializerService;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * @SuppressWarnings("php:S1192")
  */
-class CrmSerializerServiceTest extends KernelTestCase
+class CustomSerializerServiceConfigTest extends KernelTestCase
 {
-    private CrmSerializerService $serializer;
+    private CustomSerializerService $serializer;
 
     public array $contactDto = [
         "1" => "Jane",
@@ -26,7 +26,7 @@ class CrmSerializerServiceTest extends KernelTestCase
     public function setUp(): void
     {
         self::bootKernel();
-        $this->serializer = self::getContainer()->get(CrmSerializerService::class);
+        $this->serializer = self::getContainer()->get(CustomSerializerService::class);
     }
 
     public function testNormalize()

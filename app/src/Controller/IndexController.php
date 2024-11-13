@@ -3,14 +3,14 @@
 namespace App\Controller;
 
 use App\Dto\ContactDto;
-use App\Service\CrmSerializerService;
+use App\Service\CustomSerializerService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class IndexController extends AbstractController
 {
-    public function __construct(private CrmSerializerService $crmSerializerService) {}
+    public function __construct(private CustomSerializerService $crmSerializerService) {}
 
     #[Route('/', name: 'app_index')]
     public function index(): Response

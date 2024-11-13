@@ -4,16 +4,16 @@ namespace App\Tests\Functional;
 
 use App\Normalizer\Value\StringValue;
 use App\Normalizer\Value\ValueInterface;
-use App\Reflection\PropertyTypeExtractor;
+use App\Reflection\CustomPropertyTypeExtractor;
 use PHPUnit\Framework\TestCase;
 
 class PropertyTypeExtractorTest extends TestCase
 {
-    private PropertyTypeExtractor $propertyTypeExtractor;
+    private CustomPropertyTypeExtractor $propertyTypeExtractor;
 
     public function setUp(): void
     {
-        $this->propertyTypeExtractor = new PropertyTypeExtractor();
+        $this->propertyTypeExtractor = new CustomPropertyTypeExtractor();
     }
 
     public function testPropertyA()

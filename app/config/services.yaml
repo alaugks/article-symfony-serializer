@@ -14,7 +14,7 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
-    'App\Service\CrmSerializerService':
+    'App\Service\CustomSerializerService':
         arguments:
             - '@crm_serializer'
 
@@ -42,7 +42,7 @@ services:
                 - '@app.service.property_info.property_type_extractor'
 
     app.service.property_info.property_type_extractor:
-        class: 'App\Reflection\PropertyTypeExtractor'
+        class: 'App\Reflection\CustomPropertyTypeExtractor'
 
     app.normalizer.mapping_table_normalizer:
         class: 'App\Normalizer\MappingTableNormalizer'

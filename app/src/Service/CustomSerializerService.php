@@ -3,22 +3,11 @@
 namespace App\Service;
 
 use App\Dto\ContactDto;
-use App\Serializer\CrmSerializer;
 use Symfony\Component\Serializer\Serializer;
 
-class CrmSerializerService
+class CustomSerializerService
 {
-    private Serializer $serializer; // Only Symfony Serializer
-
-//    /**
-//     * Without service configuration
-//     *
-//     * @param CrmSerializer $crmSerializer
-//     */
-//    public function __construct(CrmSerializer $crmSerializer)
-//    {
-//        $this->serializer = $crmSerializer->getSerializer();
-//    }
+    private Serializer $serializer;
 
     /**
      * With service configuration
